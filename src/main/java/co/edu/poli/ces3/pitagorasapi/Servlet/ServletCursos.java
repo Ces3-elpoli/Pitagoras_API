@@ -92,7 +92,7 @@ public class ServletCursos extends HttpServlet {
         if (path.equals("/cursos")) {
             if (req.getParameter("id") == null) {
                 out.print(gson.toJson(listaCursos));
-            }else{
+            } else {
                 int id = Integer.parseInt(req.getParameter("id"));
                 Cursos BuscarCurso = null;
                 for (Cursos curso : listaCursos) {
@@ -109,7 +109,6 @@ public class ServletCursos extends HttpServlet {
             }
 
 
-
         } else if (path.equals("/cursos/facultad")) {
             if (req.getParameter("nombre") == null) {
                 out.print(gson.toJson(listaCursos));
@@ -121,10 +120,12 @@ public class ServletCursos extends HttpServlet {
                 }
             }
 
+
+        } else if (path.equals("/cursos/ruta")) {
+            String codigo = req.getParameter("codigo");
+
         }
-
     }
-
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -170,7 +171,6 @@ public class ServletCursos extends HttpServlet {
         }
         return listaCursosenFacultades;
     }
-
 
 
 
