@@ -126,6 +126,40 @@ public class ServletCursos extends HttpServlet {
     }
 
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/json");
+        resp.setCharacterEncoding("UTF-8");
+        PrintWriter out = resp.getWriter();
+        BufferedReader br = req.getReader();
+        String path = req.getServletPath();
+        Gson gson = new Gson();
+        Cursos nuevocurso = gson.fromJson(br, Cursos.class);
+
+        if (path.equals("/cursos")) {
+
+
+            boolean existeId = listaCursos.stream().anyMatch(c -> c.getId() == nuevocurso.getId());
+            boolean existeCodigo = listaCursos.stream().anyMatch(c -> c.getCodigo().equalsIgnoreCase(nuevocurso.getCodigo()));
+
+
+            if (existeId) {
+                out.print("{\"error\":\"El Curso con ID " + nuevocurso.getId() + " ya existe\"}");
+            } else if (existeCodigo) {
+                out.print("{\"error\":\"El Curso con el codigo " + nuevocurso.getCodigo() + " ya existe\"}");
+            } else if (nuevocurso.getCupoMaximo() <= 0 || nuevocurso.getCupoMaximo() == null) {
+                out.print("{\"error\":\"El cupo maximo de un curso debe de ser superior a 0\"}");
+            } else {
+                listaCursos.add(nuevocurso);
+                out.print(gson.toJson(nuevocurso));
+            }
+        }
+
+        }
+
+
+
+
 
     private List<Cursos> BuscarCursosporFacultad(String facultad) {
         List<Cursos> listaCursosenFacultades = new ArrayList<>();
